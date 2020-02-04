@@ -1,7 +1,10 @@
 package com.challenge.apirest.models;
 
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -15,17 +18,16 @@ import javax.validation.constraints.NotNull;
 public class Course {
 	
 	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private long id;
-	
-	@OneToMany(mappedBy = "course")
-    Set<Matriculation> matriculation;
     
-    @OneToMany(mappedBy = "course")
-    Set<Semester> semester;
+	@OneToMany(mappedBy="curso", cascade=CascadeType.REMOVE)
+	private List<Semester> semester = new ArrayList<>();
 
 	@NotNull
-	private int amountCourse;
+	private int necessaryCredits = 0;
+	@NotNull
+	@Column(unique=true)
 	private String name;
 	
 	public long getId() {
@@ -40,18 +42,20 @@ public class Course {
 	public void setName(String name) {
 		this.name = name;
 	}
-	public int getAmountCourse() {
-		return amountCourse;
+	public int getNecessaryCredits() {
+		return necessaryCredits;
 	}
-	public void setAmountCourse(int amountCourse) {
-		this.amountCourse = amountCourse;
+	public void setNecessaryCredits(int necessaryCredits) {
+		this.necessaryCredits = necessaryCredits;
 	}
-	public Set<Matriculation> getMatriculation() {
-		return matriculation;
+	public List<Semester> getSemester() {
+		return semester;
 	}
-	public void setMatriculation(Set<Matriculation> matriculation) {
-		this.matriculation = matriculation;
+	public void setSemester(List<Semester> semester) {
+		this.semester = semester;
 	}
+	
+
 	
 	
 }
