@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -29,10 +30,22 @@ public class User implements Serializable {
     List<Course> course = new ArrayList<Course>();
 	
 	@NotNull
+	@Column(unique = true)
 	private String name;
 	private String gender;
-	private String cpf;
 	private int type;
+	
+	public User() {
+	}
+
+	public User(long id, List<Course> course, @NotNull String name, String gender,  int type) {
+		super();
+		this.id = id;
+		this.course = course;
+		this.name = name;
+		this.gender = gender;
+		this.type = type;
+	}
 
 	public long getId() {
 		return id;
@@ -56,14 +69,6 @@ public class User implements Serializable {
 
 	public void setGender(String gender) {
 		this.gender = gender;
-	}
-
-	public String getCpf() {
-		return cpf;
-	}
-
-	public void setCpf(String cpf) {
-		this.cpf = cpf;
 	}
 
 	public int getType() {

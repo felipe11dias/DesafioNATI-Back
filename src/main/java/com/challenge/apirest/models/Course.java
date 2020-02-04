@@ -1,5 +1,6 @@
 package com.challenge.apirest.models;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,15 +16,28 @@ import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name="TB_COURSE")
-public class Course {
+public class Course implements Serializable {
+	
+	private static final long serialVersionUID = 1L;
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private long id;
     
-	@OneToMany(mappedBy="curso", cascade=CascadeType.REMOVE)
+	@OneToMany(mappedBy="course", cascade = CascadeType.ALL)
 	private List<Semester> semester = new ArrayList<>();
+	
+	public Course() {
+	}
 
+	public Course(long id, List<Semester> semester, @NotNull int necessaryCredits, @NotNull String name) {
+		super();
+		this.id = id;
+		this.semester = semester;
+		this.necessaryCredits = necessaryCredits;
+		this.name = name;
+	}
+	
 	@NotNull
 	private int necessaryCredits = 0;
 	@NotNull

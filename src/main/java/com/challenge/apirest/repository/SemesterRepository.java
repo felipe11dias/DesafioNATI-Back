@@ -4,6 +4,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.challenge.apirest.models.Semester;
 
-public interface SemesterRepository extends JpaRepository<Semester, Long>{
-
+public interface SemesterRepository extends JpaRepository<Semester, Long> {
+	
+	Semester findById(long id);
+	
 }
