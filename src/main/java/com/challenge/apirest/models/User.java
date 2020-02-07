@@ -13,7 +13,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
 
 
 @Entity
@@ -29,21 +28,31 @@ public class User implements Serializable {
 	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     List<Course> course = new ArrayList<Course>();
 	
-	@NotNull
-	@Column(unique = true)
+	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    List<Discipline> discipline = new ArrayList<Discipline>();
+	
+	@Column(nullable = false)
 	private String name;
+	@Column(nullable = false, unique = true)
+	private String email;
+	@Column(nullable = false)
 	private String gender;
+	@Column(nullable = false)
+	private int semester;
+	@Column(nullable = false)
 	private int type;
 	
 	public User() {
 	}
 
-	public User(long id, List<Course> course, @NotNull String name, String gender,  int type) {
+	public User(long id, List<Course> course, String name, String email, String gender, int semester, int type) {
 		super();
 		this.id = id;
 		this.course = course;
 		this.name = name;
+		this.email = email;
 		this.gender = gender;
+		this.semester = semester;
 		this.type = type;
 	}
 
@@ -61,6 +70,14 @@ public class User implements Serializable {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+	
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
 	}
 
 	public String getGender() {
@@ -85,6 +102,22 @@ public class User implements Serializable {
 
 	public void setCourse(List<Course> course) {
 		this.course = course;
+	}
+
+	public List<Discipline> getDiscipline() {
+		return discipline;
+	}
+
+	public void setDiscipline(List<Discipline> discipline) {
+		this.discipline = discipline;
+	}
+
+	public int getSemester() {
+		return semester;
+	}
+
+	public void setSemester(int semester) {
+		this.semester = semester;
 	}
 	
 

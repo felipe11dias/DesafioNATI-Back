@@ -1,16 +1,21 @@
 package com.challenge.apirest.models;
 
 import java.io.Serializable;
+
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
-@Table(name="TB_SUBJECT")
-public class Subject implements Serializable {
+@Table(name="TB_DISCIPLINE")
+public class Discipline implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
 	
@@ -18,21 +23,27 @@ public class Subject implements Serializable {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private long id;
 	
-	@NotNull
+	@Column(unique=false, nullable = false)
 	private String name;
-	@NotNull
+	@Column(nullable = false)
 	private int credits;
 	
-	public Subject() {
-	}
+	@JsonIgnore
+	@ManyToOne
+    @JoinColumn(name="course_id")
+    private Course course;
 	
-	public Subject(long id, @NotNull String name, int credits) {
+	public Discipline() {
+	}
+
+	public Discipline(long id, String name, int credits, Course course) {
 		super();
 		this.id = id;
 		this.name = name;
 		this.credits = credits;
+		this.course = course;
 	}
-	
+
 	public long getId() {
 		return id;
 	}
@@ -51,5 +62,12 @@ public class Subject implements Serializable {
 	public void setCredits(int credits) {
 		this.credits = credits;
 	}
+	public Course getCourse() {
+		return course;
+	}
+	public void setCourse(Course course) {
+		this.course = course;
+	}
+	
 	
 }

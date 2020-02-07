@@ -7,12 +7,13 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name="TB_COURSE")
@@ -24,26 +25,35 @@ public class Course implements Serializable {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private long id;
     
-	@OneToMany(mappedBy="course", cascade = CascadeType.ALL)
-	private List<Semester> semester = new ArrayList<>();
+	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	private List<Semester> semester = new ArrayList<Semester>();
+	
+	@OneToMany(mappedBy="course")
+    private List<Discipline> discipline;
 	
 	public Course() {
 	}
-
-	public Course(long id, List<Semester> semester, @NotNull int necessaryCredits, @NotNull String name) {
+	
+	@Column(nullable = false)
+	private int necessaryCredits = 0;
+	@Column(unique=true, nullable = false)
+	private String name;
+	@Column(nullable = false)
+	private String shift;
+	@Column(nullable = false)
+	private int totalSemester;
+	
+	public Course(long id, List<Semester> semester, List<Discipline> discipline, int necessaryCredits, String name,
+			String shift, int totalSemester) {
 		super();
 		this.id = id;
 		this.semester = semester;
+		this.discipline = discipline;
 		this.necessaryCredits = necessaryCredits;
 		this.name = name;
+		this.shift = shift;
+		this.totalSemester = totalSemester;
 	}
-	
-	@NotNull
-	private int necessaryCredits = 0;
-	@NotNull
-	@Column(unique=true)
-	private String name;
-	
 	public long getId() {
 		return id;
 	}
@@ -68,8 +78,24 @@ public class Course implements Serializable {
 	public void setSemester(List<Semester> semester) {
 		this.semester = semester;
 	}
-	
-
+	public int getTotalSemester() {
+		return totalSemester;
+	}
+	public void setTotalSemester(int totalSemester) {
+		this.totalSemester = totalSemester;
+	}
+	public String getShift() {
+		return shift;
+	}
+	public void setShift(String shift) {
+		this.shift = shift;
+	}
+	public List<Discipline> getDiscipline() {
+		return discipline;
+	}
+	public void setDiscipline(List<Discipline> discipline) {
+		this.discipline = discipline;
+	}
 	
 	
 }
